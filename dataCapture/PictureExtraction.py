@@ -11,9 +11,9 @@ if vc.isOpened(): # try to get the first frame
 else:
     rval = False
 
-nombre = 'Pablo' 
+nombre = 'JuanO' 
 
-path = f'C:\\Users\\pcard\\OneDrive\\Colegio_Uni\\Uni\\MBD\\No estructurados\\FaceDetection\\data\\{nombre}'
+path = f'C:\\Users\\juano\\Documents\\Master MBD\\Segundo_Cuatrimestre\\Datos no estructurados\\RepoGit\\FaceDetection\\data\\JuanO'
 
 if not os.path.exists(path):
     os.makedirs(path)
