@@ -1,7 +1,8 @@
 import cv2
 import PySimpleGUI as sg
 import random
-
+from keras.utils import load_img, img_to_array
+import numpy as np
 
 
 def rectangle(frame):
@@ -35,7 +36,13 @@ def SetLED(window, key, color):
     graph.draw_circle((0, 0), 12, fill_color=color, line_color=color)
 
 
-def UpdateLed(window, crop):
+def UpdateLed(window, crop,cnn):
+    # to convert image in pii format into a numpy array format
+    test_image = img_to_array(crop)
+    # adding extra dimension to put this image into a batch by saying where we want to add this batch (as the first dimension)
+    test_image = np.expand_dims(test_image, axis = 0)
+    # cnn prediction on the test image
+    result = cnn.predict(test_image)
     SetLED(window, 'no_cara', 'green' if random.randint(1, 1000) > 500 else 'red')
     SetLED(window, 'cara_reconocida', 'green' if random.randint(1, 1000) > 500 else 'red')
     SetLED(window, 'pablo', 'green' if random.randint(1, 1000) > 500 else 'red')
