@@ -4,6 +4,7 @@ import os
 import interfazAux as iAux
 
 cont = 0
+updateFreq = 25
 
 layout = iAux.layout
 # Create the window and show it without the plot
@@ -25,5 +26,6 @@ while True:
     imgbytes = cv2.imencode(".png", frame)[1].tobytes()
     window["camara"].update(data=imgbytes)
     window['aaa'].update(cont)
-
+    if cont%updateFreq ==0:    
+        iAux.UpdateLed(window)
 window.close()

@@ -11,16 +11,20 @@ if vc.isOpened(): # try to get the first frame
 else:
     rval = False
 
-nombre = 'JuanMerino' 
+nombre = 'JuanO' 
 
-path = f'C:\\Users\\pcard\\OneDrive\\Colegio_Uni\\Uni\\MBD\\No estructurados\\FaceDetection\\data\\{nombre}'
+path = f'C:\\Users\\juano\\Documents\\Master MBD\\Segundo_Cuatrimestre\\Datos no estructurados\\RepoGit\\FaceDetection\\data\\JuanO'
 
 if not os.path.exists(path):
     os.makedirs(path)
+    count = 0
 else:
-    print('Las imagenes se guardarán en un directorio ya existente, por lo que se sobreescribirán las ya generadas.')
+    files = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path,f))]
+    l = len(files)
+    count = l
+    print(f'Se han encontrado {l} imágenes en el directorio. Se crearán nuevas')
 
-count = 0
+
 while rval:
     cv2.imshow("Camara Frontal", frame)
     count +=1

@@ -1,5 +1,6 @@
 import cv2
 import PySimpleGUI as sg
+import random
 
 
 
@@ -22,7 +23,24 @@ def rectangle(frame):
     key = cv2.waitKey(20)
     return frame, crop
 
+def LEDIndicator(key=None, radius=30):
+    return sg.Graph(canvas_size=(radius, radius),
+             graph_bottom_left=(-radius, -radius),
+             graph_top_right=(radius, radius),
+             pad=(0, 0), key=key)
 
+def SetLED(window, key, color):
+    graph = window[key]
+    graph.erase()
+    graph.draw_circle((0, 0), 12, fill_color=color, line_color=color)
+
+
+def UpdateLed(window):
+    SetLED(window, 'no_cara', 'green' if random.randint(1, 1000) > 500 else 'red')
+    SetLED(window, 'cara_reconocida', 'green' if random.randint(1, 1000) > 500 else 'red')
+    SetLED(window, 'pablo', 'green' if random.randint(1, 1000) > 500 else 'red')
+    SetLED(window, 'juan', 'green' if random.randint(1, 1000) > 500 else 'red')
+    SetLED(window, 'juanmi', 'green' if random.randint(1, 1000) > 500 else 'red')
 
 
 sg.theme("dark grey 9")
@@ -45,13 +63,13 @@ camera = [[sg.Text('Camera', font='Any 10', background_color=DARK_HEADER_COLOR)]
 
 pad = (10,30)
 
-block = [[sg.Text('Categorías:', font='Any 10')],
-            [sg.T('A: No hay ninguna cara', pad=pad)],
-            [sg.T('B: Hay cara pero no es reconocida', pad=pad)],
-            [sg.T('C: Aparece la cara de Pablo', pad=pad)],
-            [sg.T('D: Aparece la cara de Juan', pad=pad)],
-            [sg.T('E: Aparece la cara de Juanmi', pad=pad)],
-            [sg.T('', key='aaa', pad=pad)]]
+block = [[sg.Text('Categorías:', font='Any 10', background_color=DARK_HEADER_COLOR)],
+        [sg.T('A: No hay ninguna cara', pad=(10,30)), LEDIndicator('no_cara')],
+        [sg.T('B: Hay cara pero no es reconocida', pad=(10,30)), LEDIndicator('cara_reconocida')],
+        [sg.T('C: Aparece la cara de Pablo', pad=(10,30)), LEDIndicator('pablo')],
+        [sg.T('D: Aparece la cara de Juan', pad=(10,30)), LEDIndicator('juan')],
+        [sg.T('E: Aparece la cara de Juanmi', pad=(10,30)), LEDIndicator('juanmi')],
+        [sg.T('', key='aaa', pad=(10,30))]]
 
 # Define the window layout
 layout = [
