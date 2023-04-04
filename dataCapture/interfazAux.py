@@ -35,7 +35,7 @@ def SetLED(window, key, color):
     graph.draw_circle((0, 0), 12, fill_color=color, line_color=color)
 
 
-def UpdateLed(window):
+def UpdateLed(window, crop):
     SetLED(window, 'no_cara', 'green' if random.randint(1, 1000) > 500 else 'red')
     SetLED(window, 'cara_reconocida', 'green' if random.randint(1, 1000) > 500 else 'red')
     SetLED(window, 'pablo', 'green' if random.randint(1, 1000) > 500 else 'red')

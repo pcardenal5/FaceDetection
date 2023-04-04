@@ -27,5 +27,5 @@ while True:
     window["camara"].update(data=imgbytes)
     window['aaa'].update(cont)
     if cont%updateFreq ==0:    
-        iAux.UpdateLed(window)
+        iAux.UpdateLed(window, crop)
 window.close()
