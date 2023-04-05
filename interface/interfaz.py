@@ -1,6 +1,5 @@
 import PySimpleGUI as sg
 import cv2
-import os
 import interfazAux as iAux
 
 cont = 0

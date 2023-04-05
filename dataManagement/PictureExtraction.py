@@ -1,7 +1,7 @@
 import cv2
 import os
 import numpy as np 
-import interfazAux
+from ..interface import interfazAux
 
 cv2.namedWindow("Camara Frontal")
 vc = cv2.VideoCapture(0)
