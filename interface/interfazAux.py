@@ -5,8 +5,9 @@ from keras.utils import load_img, img_to_array
 import numpy as np
 import tensorflow as tf
 import json
+from keras.preprocessing.image import ImageDataGenerator
 
-def rectangle(frame):
+def rectangle(frame,cont):
     y, x, _ = frame.shape
     h = 112*2
     w = h
@@ -22,6 +23,7 @@ def rectangle(frame):
             startX:endX,
             :]
     crop = cv2.resize(crop, (112,112))
+    #cv2.imwrite('C:/Users/juano/Documents/Master MBD/Segundo_Cuatrimestre/Datos no estructurados/RepoGit/FaceDetection/data/JuanM/JuanM'+str(cont)+'.jpeg', crop) 
     key = cv2.waitKey(20)
     return frame, crop
 
@@ -38,18 +40,29 @@ def SetLED(window, key, color):
 
 
 def UpdateLed(window, crop,cnn): #cnn
+    targetSizeWidth = 112
+    targetSizeHeight = 112
+    targetSize = (targetSizeWidth, targetSizeHeight)
     # to convert image in pii format into a numpy array format
     test_image = img_to_array(crop)
     # adding extra dimension to put this image into a batch by saying where we want to add this batch (as the first dimension)
     test_image = np.expand_dims(test_image, axis = 0)
+    test_datagen = ImageDataGenerator(rescale=1./255)
+
+    test_generator = test_datagen.flow(
+        x=test_image,
+        batch_size=1,  # A batch size of 1 ensures that all test images are processed
+        shuffle=False
+    )
     # cnn prediction on the test image
-    predict = cnn.predict(test_image)
-    print("New predict",predict[0])
-    SetLED(window, 'no_cara', 'green' if np.argmax(predict[0])==4 else 'red')
-    SetLED(window, 'cara_reconocida', 'green' if np.argmax(predict[0])==0 else 'red')
-    SetLED(window, 'pablo', 'green' if np.argmax(predict[0])==3 > 500 else 'red')
-    SetLED(window, 'juan', 'green' if np.argmax(predict[0])==2 > 500 else 'red')
-    SetLED(window, 'juanmi', 'green' if np.argmax(predict[0])==1 > 500 else 'red')
+    predict = cnn.predict(test_generator)
+    predicted_labels = np.argmax(predict, axis=1).ravel().tolist()
+    print("New predict",predicted_labels[0])
+    SetLED(window, 'no_cara', 'green' if predicted_labels[0]==4 else 'red')
+    SetLED(window, 'cara_reconocida', 'green' if predicted_labels[0]==0 else 'red')
+    SetLED(window, 'pablo', 'green' if predicted_labels[0]==3  else 'red')
+    SetLED(window, 'juan', 'green' if predicted_labels[0]==2 else 'red')
+    SetLED(window, 'juanmi', 'green' if predicted_labels[0]==1  else 'red')
 def load(filename: str):
     """Loads a trained CNN model and the corresponding preprocessing information.
     Args:
