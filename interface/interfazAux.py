@@ -3,7 +3,8 @@ import PySimpleGUI as sg
 import random
 from keras.utils import load_img, img_to_array
 import numpy as np
-
+import tensorflow as tf
+import json
 
 def rectangle(frame):
     y, x, _ = frame.shape
@@ -42,13 +43,23 @@ def UpdateLed(window, crop,cnn): #cnn
     # adding extra dimension to put this image into a batch by saying where we want to add this batch (as the first dimension)
     test_image = np.expand_dims(test_image, axis = 0)
     # cnn prediction on the test image
-    result = cnn.predict(test_image)
-    SetLED(window, 'no_cara', 'green' if random.randint(1, 1000) > 500 else 'red')
-    SetLED(window, 'cara_reconocida', 'green' if random.randint(1, 1000) > 500 else 'red')
-    SetLED(window, 'pablo', 'green' if random.randint(1, 1000) > 500 else 'red')
-    SetLED(window, 'juan', 'green' if random.randint(1, 1000) > 500 else 'red')
-    SetLED(window, 'juanmi', 'green' if random.randint(1, 1000) > 500 else 'red')
+    predict = cnn.predict(test_image)
+    print("New predict",predict[0])
+    SetLED(window, 'no_cara', 'green' if np.argmax(predict[0])==4 else 'red')
+    SetLED(window, 'cara_reconocida', 'green' if np.argmax(predict[0])==0 else 'red')
+    SetLED(window, 'pablo', 'green' if np.argmax(predict[0])==3 > 500 else 'red')
+    SetLED(window, 'juan', 'green' if np.argmax(predict[0])==2 > 500 else 'red')
+    SetLED(window, 'juanmi', 'green' if np.argmax(predict[0])==1 > 500 else 'red')
+def load(filename: str):
+    """Loads a trained CNN model and the corresponding preprocessing information.
+    Args:
+        filename: Relative path to the file without the extension.
+    """
+    model = tf.keras.models.load_model(filename + '.h5')
 
+    with open(filename + '.json') as f:
+        model_name = json.load(f)
+    return model
 
 sg.theme("dark grey 9")
 
@@ -84,13 +95,3 @@ layout = [
     [sg.Column(camera, size=(650,530),pad=BPAD, background_color=BORDER_COLOR),
     sg.Column(block, size=(650,530), pad=BPAD, background_color=BORDER_COLOR)]
 ]
-def load(filename: str):
-    """Loads a trained CNN model and the corresponding preprocessing information.
-    Args:
-        filename: Relative path to the file without the extension.
-    """
-    model = tf.keras.models.load_model(filename + '.h5')
-
-    with open(filename + '.json') as f:
-        model_name = json.load(f)
-    return model
