@@ -82,17 +82,17 @@ def create_model():
 #Change accordingly to train with different data sets.
 dataDir = 'D:/DatosMBD/'
 
-#Now we set improtant parameters for our CNN
+#Now we set important parameters for our CNN
 targetSizeWidth = 112
 targetSizeHeight = 112
 targetSize = (targetSizeWidth, targetSizeHeight)
-batchSize = 32
+batchSize = 32 
 
 train_datagen = ImageDataGenerator(
         rescale=1./255,
         shear_range=0.2,
         zoom_range=0.2) 
-#We dont want the dataset to be flipped as orientation is important, so we delete the horizontal_flip parameter
+#We dont want the dataset to be flipped as orientation is important, so we don't include the horizontal_flip parameter
 train_set = train_datagen.flow_from_directory(
         os.path.join(dataDir, '/train/'),
         target_size = targetSize,
