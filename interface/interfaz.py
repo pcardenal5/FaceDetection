@@ -4,7 +4,7 @@ import interfazAux as iAux
 import time
 cont = 0
 updateFreq = 25
-directory_filename='C:/Users/juano/Documents/Master MBD/Segundo_Cuatrimestre/Datos no estructurados/RepoGit/FaceDetection/cnn/ModeloPablo20'
+directory_filename='../cnn/ModeloPablo20'
 layout = iAux.layout
 # Create the window and show it without the plot
 window = sg.Window("Interfaz de reconocimiento facial", layout, location=(0, 0))
