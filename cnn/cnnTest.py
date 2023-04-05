@@ -60,14 +60,3 @@ testDirectory='D:/DatosMBD/validation'
 
 cnn=load(directory_filename)
 predict(cnn,testDirectory,'validation')
-
-
-
-
-
-
-
-
-
-
-
