@@ -37,7 +37,7 @@ def predict(model,test_dir,dataset_name:str, save: bool = True):
     # Predict categories
     predictions =model.predict(test_generator)
     predicted_labels = np.argmax(predictions, axis=1).ravel().tolist()
-    print(type(test_generator.class_indices))
+    #print(type(test_generator.class_indices))
    
     # Format results and compute classification statistics
     results = Results(test_generator.class_indices, dataset_name=dataset_name)
