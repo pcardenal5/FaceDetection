@@ -36,7 +36,7 @@ def SetLED(window, key, color):
     graph.draw_circle((0, 0), 12, fill_color=color, line_color=color)
 
 
-def UpdateLed(window, crop,cnn):
+def UpdateLed(window, crop,cnn): #cnn
     # to convert image in pii format into a numpy array format
     test_image = img_to_array(crop)
     # adding extra dimension to put this image into a batch by saying where we want to add this batch (as the first dimension)
@@ -84,3 +84,13 @@ layout = [
     [sg.Column(camera, size=(650,530),pad=BPAD, background_color=BORDER_COLOR),
     sg.Column(block, size=(650,530), pad=BPAD, background_color=BORDER_COLOR)]
 ]
+def load(filename: str):
+    """Loads a trained CNN model and the corresponding preprocessing information.
+    Args:
+        filename: Relative path to the file without the extension.
+    """
+    model = tf.keras.models.load_model(filename + '.h5')
+
+    with open(filename + '.json') as f:
+        model_name = json.load(f)
+    return model
