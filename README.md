@@ -59,13 +59,45 @@ To develop the interface we have used the `PySimpleGUI` python library. It conta
 
 # 4. Training & Test
 
+**Training**
+
 First, let's start with the creation of the convolutional network, which we will then use. The architecture of the network is as follows:
-- Four convolutional blocks, each containing a convolutional layer followed by a max-pooling layer.
+- Four convolutional blocks, each containing a convolutional layer followed by a max-pooling layer. In each pooling layer, a 2x2 window and a stride of 2 is used to reduce the dimensionality of the input image.
 - The convolutional blocks are followed by the flatten layer which converts the output of the last max-pooling layer a 3D tensor, into a 1D array.
 - For a more accurate feature extraction, just before the classification layer we have included a dense layer whose activation function is `relu` and has 512 neurons.
 - The last dense layer has 5 neurons, as we have 5 classes, and uses the sigmoid activation function, which makes it suitable for multi-label classification problems as other activation functions do not create a probability distribution.
 
+Then, the training, validation and test directories are established:
+- Train: Data augmentation transformations such as random rotations, shifts and zooms are applied to increase the variability of the data.
+- Validation: Only a scaling of the image pixel values is performed.
+- Test: Only a scaling of the image pixel values is performed.
+
+Then, the CNN is trained using the training and test sets and its accuracy is evaluated on the validation set. The graph of the evolution of accuracy and loss during training is also displayed. 
+
+![image.png](./Report/train1.png)
+
+![image.png](./Report/train1.png)
+
+Finally, the trained model is saved in a .h5 file and the model name is saved in a .json file for further use in the user interface.
+
+### Test
+
+First, the function `load` is defined, which loads the previously trained CNN model.  
+
+Then, the `predict` function then uses the previously loaded model. In order to find the category with the highest probability, the `argmax` function of Numpy is used.
+
+Using the validation subset the confusion matrix looks as follows:
+
+![image.png](./Report/ConfusionMatrix.png)
+
 # 5. Final Results
-*Check final results and future implementations* 
- 
-[Enter explanation]
+
+The model is perfoming good as we have seen, for now it detects our faces and classifies them correctly. As a further means of developing the software we could use a better dataset of non-recognizable faces, that being better artificial data or a varied set of normal human faces. Finally, the implementation of the CNN with the user interface can be seen on the following figure:
+
+![image.png](./Report/resultados%20interfaz.png)
+
+Figure 3: Final result of the interface. It can be seen that the network correctly predicts Juan's face and the Light updates accordingly.
+
+As closing words, this is a simple model and the user experience can be easily upgraded improving the interface. The aim of this project is to recognize faces, not a graphical desing one, so we are really satisfied with teh result. The CNN is able to easily distinguish the five classes despite thre having three very similar classes.
+
+To execute the script one must input `python main.py -path /path/to/main`, and in case this command is executed from the main folder,`python main.py -path ./`. There is a small counter on the bottom of teh window and the prediction will update every 50 units.
